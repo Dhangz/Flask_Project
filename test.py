@@ -15,8 +15,13 @@ class MyappTests(unittest.TestCase):
     self.assertEqual(response.status_code, 200)
     self.assertEqual(response.data.decode(), "<p>Hello, World!</p>")
 
-  def test_get_actor(self):
+  def test_get_dogs(self):
     response = self.app.get("/dogs")
+    self.assertEqual(response.status_code, 200)
+    self.assertTrue("Loxodonta africana" in response.data.decode())
+
+  def test_get_dog_by_id(self):
+    response = self.app.get("/dogs/1")
     self.assertEqual(response.status_code, 200)
     self.assertTrue("Loxodonta africana" in response.data.decode())
 
