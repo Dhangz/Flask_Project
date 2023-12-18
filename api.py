@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, make_response
+from flask import Flask, jsonify, make_response, request
 from flask_mysqldb import MySQL
 
 
@@ -12,9 +12,7 @@ app.config["MYSQL_USER"] = "root"
 app.config["MYSQL_PASSWORD"] = ""
 app.config["MYSQL_DB"] = "dog_breeding"
 
-
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
-
 
 mysql = MySQL(app)
 
@@ -55,6 +53,40 @@ def get_dog_relationships(id):
     """.format(id))
     
     return make_response(jsonify({"relationship_id":id, "relationship":data, "count":len(data), }), 200)
+
+
+# Create Dogs
+@app.route("/dogs", methods=["POST"])
+def add_actor():
+    cur = mysql.connection.cursor()
+    info = request.get_json()
+
+    dogs_name = info["dogs_name"]
+    born_in_litter_id = info["born_in_litter_id"]
+    gender_mf = info["gender_mf"]
+    date_of_birth = info["date_of_birth"]
+    place_of_birth = info["place_of_birth"]
+    other_details = info["other_details"]
+
+    cur.execute(
+            """INSERT INTO dogs (dogs_name, born_in_litter_id, gender_mf, date_of_birth, place_of_birth, other_details)
+               VALUES (%s, %s, %s, %s, %s, %s,) """, (dogs_name, born_in_litter_id, gender_mf, date_of_birth, place_of_birth, other_details)
+    )
+
+    mysql.connection.commit()
+    print("row(s) affected :{}".format(cur.rowcount))
+    rows_affected = cur.rowcount
+    cur.close()
+    return make_response(jsonify({"message": "dog added sucessfully", "rows_affected": cur.rowcount}), 201)
+
+
+
+
+
+
+
+
+
 
 
 if __name__ == "__main__":
