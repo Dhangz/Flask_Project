@@ -1,5 +1,5 @@
 {% extends 'base.html' %} {% block title %} Dog List {% endblock %} {% block
-header %} Table Data{% endblock %} {% block body %}
+header %} Dog List {% endblock %} {% block body %}
 
 <a
   href="{{ url_for('insert') }}"
@@ -21,12 +21,12 @@ header %} Table Data{% endblock %} {% block body %}
   class="form-inline mb-3 float-right"
 >
   <div class="form-group">
-    <label for="search_query" class="mr-2">Search:</label>
     <input
       type="text"
       name="search_query"
       id="search_query"
       class="form-control"
+      placeholder="Search"
     />
   </div>
   <button type="submit" class="btn btn-primary">Search</button>
@@ -41,6 +41,7 @@ messages %}
   {{message}}
 </div>
 {%endfor%} {%endif%} {%endwith%} {% if search_query %}
+
 <h3>Search results for "{{ search_query }}"</h3>
 {% endif %}
 
@@ -72,14 +73,14 @@ messages %}
       <td>
         <a
           href="{{ url_for('update', id=dog[0]) }}"
-          class="btn btn-warning btn-sm mt-3"
+          class="btn btn-warning btn-sm"
           >Edit</a
         >
 
         <a
           href="/delete/{{dog[0]}}"
           onclick="return confirm('Are Sure Want To Deleted ?')"
-          class="btn btn-danger btn-sm mt-3"
+          class="btn btn-danger btn-sm mt-2"
           >Delete</a
         >
       </td>

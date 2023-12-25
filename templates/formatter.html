@@ -1,5 +1,5 @@
-{% extends 'base.html' %} {% block title %} Add New Dogs {% endblock %} {% block
-header %} Add New Dogs {% endblock %} {% block body %}
+{% extends 'base.html' %} {% block title %} Format {% endblock %} {% block
+header %} Format {% endblock %} {% block body %}
 <a
   href="{{ url_for('Index') }}"
   class="btn btn-primary"
@@ -8,7 +8,7 @@ header %} Add New Dogs {% endblock %} {% block body %}
 >
 
 <form method="post" action="{{ url_for('api') }}">
-  <div class="float-right mr-5">
+  <div class="float-left mr-5">
     <label for="format">Select Format:</label>
     <select id="format" class="btn btn-success btn-sm mt-2">
       <option value="json">JSON</option>

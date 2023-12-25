@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request, url_for, flash, redirect, jsonify, make_response, abort
-from werkzeug.utils import redirect
+
 from flask_mysqldb import MySQL
 
 
 app = Flask(__name__)
-app.secret_key = 'many random bytes'
+app.secret_key = 'admin'
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
@@ -14,10 +14,13 @@ app.config['MYSQL_DB'] = 'dog_breeding'
 mysql = MySQL(app)
 
 
+
 @app.route('/', methods=['GET', 'POST'])
 def Index():
     if request.method == 'POST':
+
         search_query = request.form.get('search_query')
+        # Create cursor to interact with the  database
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM dogs WHERE dog_name LIKE %s", ('%' + search_query + '%',))
         data = cur.fetchall()
@@ -65,6 +68,8 @@ def insert():
 def update(id):
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM dogs WHERE dog_id = %s", (id,))
+
+    # to retrieve the next row from the result set.
     data = cur.fetchone()
     cur.close()
 
@@ -146,15 +151,6 @@ def api():
         # Return an error response to the client
         abort(500, description="Internal Server Error")
 
-@app.route('/formatter', methods=['GET', 'POST'])
-def formatter():
-    if request.method == 'POST':
-        # If the form is submitted, redirect to the /format endpoint with the selected format
-        selected_format = request.form.get('format', 'json').lower()
-        return redirect(url_for('api', format=selected_format))
-
-    # If it's a GET request, render the formatter.html template
-    return render_template('formatter.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
