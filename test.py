@@ -10,9 +10,9 @@ class MyAppTests(unittest.TestCase):
 
     def test_index(self):
         response = self.app.get("/")
+        print(response.data)  # Print the content of the response
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b"Python Flask CRUD Application", response.data)
-
+        self.assertIn(b"Data Management System", response.data)
     def test_insert(self):
         response = self.app.post("/insert", data=dict(
             born_in_litter_id=1,
@@ -27,7 +27,6 @@ class MyAppTests(unittest.TestCase):
 
     def test_update(self):
         response = self.app.post("/update/5", data=dict(
-            dog_id=5,
             dog_name="blacky",
             gender_mf="M",
             date_of_birth="2023-02-02",

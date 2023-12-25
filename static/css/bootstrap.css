@@ -27,6 +27,36 @@ section,
 summary {
   display: block;
 }
+
+/*Side bar*/
+.sidebar {
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  background-color: #111;
+  padding-top: 20px;
+}
+
+.sidebar a {
+  padding: 10px;
+  text-decoration: none;
+  font-size: 18px;
+  color: white;
+  display: block;
+}
+
+.sidebar a:hover {
+  background-color: #555;
+}
+
+.content {
+  margin-left: 250px;
+  padding: 16px;
+}
+
+
+
+
 audio,
 canvas,
 progress,

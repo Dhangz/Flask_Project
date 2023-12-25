@@ -1,0 +1,79 @@
+{% extends 'base.html' %} {% block title %} Add New Dogs {% endblock %} {% block
+header %} Add New Dogs {% endblock %} {% block body %}
+<a
+  href="{{ url_for('Index') }}"
+  class="btn btn-primary"
+  style="margin-bottom: 1.3rem"
+  >Home</a
+>
+
+<form method="post" action="{{ url_for('api') }}">
+  <div class="float-right mr-5">
+    <label for="format">Select Format:</label>
+    <select id="format" class="btn btn-success btn-sm mt-2">
+      <option value="json">JSON</option>
+      <option value="xml">XML</option>
+    </select>
+    <button
+      type="button"
+      class="btn btn-primary btn-sm mt-2"
+      onclick="fetchData()"
+    >
+      Fetch Data
+    </button>
+    <div id="output">
+      <div></div>
+    </div>
+    <!-- Add a div to display the fetched data -->
+  </div>
+</form>
+
+<script>
+  function fetchData() {
+    console.log("Fetching data...");
+    document.getElementById("output").innerHTML = "Fetching data...";
+
+    var format = document.getElementById("format").value;
+    var apiUrl = "/format?format=" + format;
+
+    fetch(apiUrl)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        // Check the content type
+        var contentType = response.headers.get("content-type");
+        if (contentType.includes("application/json")) {
+          // JSON response
+          return response.json();
+        } else if (contentType.includes("application/xml")) {
+          // XML response
+          return response.text();
+        } else {
+          throw new Error("Unexpected content type: " + contentType);
+        }
+      })
+      .then((data) => {
+        console.log("Fetched Data:", data);
+
+        if (typeof data === "object") {
+          // JSON data
+          document.getElementById("output").innerHTML = JSON.stringify(
+            data,
+            null,
+            2
+          );
+        } else {
+          // XML data
+          document.getElementById("output").innerHTML = data;
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        document.getElementById("output").innerHTML =
+          "Error fetching data: " + error.message;
+      });
+  }
+</script>
+{% endblock %}

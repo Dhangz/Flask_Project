@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dogs>
+    {% for row in dogs %}
+    <dog>
+        <dog_id>{{ row[0] }}</dog_id>
+        <born_in_litter_id>{{ row[1] }}</born_in_litter_id>
+        <dog_name>{{ row[2] }}</dog_name>
+        <gender_mf>{{ row[3] }}</gender_mf>
+        <date_of_birth>{{ row[4] }}</date_of_birth>  
+        <place_of_birth>{{ row[5] }}</place_of_birth> 
+        <other_details>{{ row[6] }}</other_details>
+    </dog>
+    {% endfor %}
+</dogs>
