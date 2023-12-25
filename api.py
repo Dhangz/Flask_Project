@@ -13,10 +13,21 @@ app.config['MYSQL_DB'] = 'dog_breeding'
 
 mysql = MySQL(app)
 
-@app.route('/')
+
+@app.route('/', methods=['GET', 'POST'])
 def Index():
+    if request.method == 'POST':
+        search_query = request.form.get('search_query')
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM dogs WHERE dog_name LIKE %s", ('%' + search_query + '%',))
+        data = cur.fetchall()
+        cur.close()
+
+        return render_template('index.html', dogs=data, search_query=search_query)
+
     data = data_fetch("SELECT * FROM dogs")
-    return render_template('index.html', dogs=data)
+    return render_template('index.html', dogs=data, search_query=None)
+
 
 
 def data_fetch(query):
@@ -94,6 +105,8 @@ def delete(id):
     cur.execute("DELETE FROM dogs WHERE dog_id=%s", (id,))
     mysql.connection.commit()
     return redirect(url_for('Index'))
+
+
 
 
 

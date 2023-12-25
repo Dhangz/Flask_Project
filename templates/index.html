@@ -15,6 +15,23 @@ header %} Table Data{% endblock %} {% block body %}
   >Format</a
 >
 
+<form
+  method="post"
+  action="{{ url_for('Index') }}"
+  class="form-inline mb-3 float-right"
+>
+  <div class="form-group">
+    <label for="search_query" class="mr-2">Search:</label>
+    <input
+      type="text"
+      name="search_query"
+      id="search_query"
+      class="form-control"
+    />
+  </div>
+  <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
 {%with messages = get_flashed_messages()%} {%if messages%} {% for message in
 messages %}
 <div class="alert alert-success alert-dismissable fade show" role="alert">
@@ -23,7 +40,9 @@ messages %}
   </button>
   {{message}}
 </div>
-{%endfor%} {%endif%} {%endwith%}
+{%endfor%} {%endif%} {%endwith%} {% if search_query %}
+<h3>Search results for "{{ search_query }}"</h3>
+{% endif %}
 
 <table class="table table-hover">
   <thead class="thead-light">
